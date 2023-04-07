@@ -1,27 +1,21 @@
 import requests
 from bs4 import BeautifulSoup
 
+headers = {"User-Agent":"Mozilla/5.0"}
+
 def scraping(categoria, page):
     data = []
-    headers = {"User-Agent":"Mozilla/5.0"}
     URL = "https://legendei.net/category/"+ categoria +"/page/" + str(page) + "/"
     page = requests.get(URL, headers=headers)
 
     soup = BeautifulSoup(page.content, "html.parser")
     job_elements = soup.find_all("h3", class_="simple-grid-grid-post-title")
-    images = results.find_all('img')
 
     for job_element in job_elements:
         title_element = job_element.find("a")
-        for image in images:
+        link = title_element["href"].split('/')
+        print(link[3])
 
-            temp = {'nome' : title_element.text.strip(), 
-                    'link' : title_element["href"],
-                    'image' : image.get("src")
-            }
-        data.append(temp)
-        #print(title_element.text.strip(), " \t\t " ,title_element["href"])
-    return data
 def paginasBusca(nome):
     URL = "https://legendei.net/?s="+ nome
     #https://legendei.net/page/2/?s=bull
@@ -31,8 +25,30 @@ def paginasBusca(nome):
     pages = int(soup.find("span", class_="sfwppa-pages").text.strip().split(" ")[3])
     print(pages)
 
-paginasBusca('ncis')
-print(scraping('serie', 1))
+
+def buscaLegenda(nome):
+    #https://legendei.net/shazam-fury-of-the-gods-web-dl/
+    data = []
+    headers = {"User-Agent":"Mozilla/5.0"}
+    URL = "https://legendei.net/"+ nome
+    page = requests.get(URL, headers=headers)
+
+    soup = BeautifulSoup(page.content, "html.parser")
+    job_elements = soup.find_all("div", class_="entry-content simple-grid-clearfix")
+    
+    for div in job_elements:
+        info = []
+        link = div.find('a')['href']
+        temp = div.find_all('p')
+        for i in temp:
+            info.append(i.text.strip())
+        temp = {'link' : link, 'info' : info}
+        data.append(temp)
+    return data
+    
+
+#print(buscaLegenda('shazam-fury-of-the-gods-web-dl'))
+scraping('filmes', 1)
 
 #https://legendei.net/page/2/?s=bull
 #https://legendei.net/category/serie/

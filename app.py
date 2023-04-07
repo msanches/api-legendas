@@ -10,7 +10,6 @@ def home():
   html += '<li><a href= "../categoria/serie/1">Para buscar series<a></li>'
   html += '<li><a href= "../categoria/filmes/1">Para buscar filmes<a></li>'
   html += '<li><a href= "../buscar/ncis/1">Para por uma legenda específica<a></li>'
-  html += '<li><a href= "../paginas/ncis">Quantidade de páginas de uma legenda específica<a></li></ul>'
   return html
   
 @app.route('/buscar/<serie>/<page>')
@@ -29,9 +28,9 @@ def api(categoria, page):
     response.headers.add('Access-Control-Allow-Origin', '*')
     return response
   
-@app.route('/paginas/<serie>')
-def search_by_name(serie):
-  dados = series.paginasBusca(serie)
+@app.route('/legenda/<nome>')
+def legenda(nome):
+  dados = series.buscaLegenda(nome) 
 
   response = jsonify(dados)
   response.headers.add('Access-Control-Allow-Origin', '*')
