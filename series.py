@@ -68,9 +68,14 @@ def buscaLegenda(nome):
         info = []
         link = div.find('a')['href']
         temp = div.find_all('p')
+        image = soup.find("img")
         for i in temp:
             info.append(i.text.strip())
-        temp = {'download' : link, 'titulo' : info[0], 'Sinopse': info[3].split(":")[1].strip()}
+        temp = {'download' : link, 
+                'titulo' : info[0], 
+                'sinopse': info[3].split(":")[1].strip(), 
+                'imagem': image.get("src")
+                }
         data.append(temp)
     return data
 
