@@ -7,6 +7,7 @@ app = Flask(__name__)
 def home():
   html = '<h1>Página inicial</h1>'
   html += '<ul>'
+  html += '<li><a href= "../categoria/">Para buscar últimas legendas<a></li>'
   html += '<li><a href= "../categoria/serie/1">Para buscar series<a></li>'
   html += '<li><a href= "../categoria/filmes/1">Para buscar filmes<a></li>'
   html += '<li><a href= "../buscar/ncis/1">Para por uma legenda específica<a></li>'
@@ -20,8 +21,16 @@ def search(serie, page):
   response.headers.add('Access-Control-Allow-Origin', '*')
   return response
 
+@app.route('/categoria/')
+def ultimas():
+    dados = series.scraping()
+
+    response = jsonify(dados)
+    response.headers.add('Access-Control-Allow-Origin', '*')
+    return response
+
 @app.route('/categoria/<categoria>/<page>')
-def api(categoria, page):
+def categoria(categoria, page):
     dados = series.scraping(categoria, page)
 
     response = jsonify(dados)
