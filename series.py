@@ -71,8 +71,14 @@ def buscaLegenda(nome):
         image = soup.find("img")
         for i in temp:
             info.append(i.text.strip())
+        releases = info[2].split("\n")
+        releases.pop(0)
+        n = len(releases)
+        releases.pop(n-1)
+        print(n)
         temp = {'download' : link, 
-                'titulo' : info[0], 
+                'titulo' : info[0],
+                'releases' : releases, 
                 'sinopse': info[3].split(":")[1].strip(), 
                 'imagem': image.get("src")
                 }
